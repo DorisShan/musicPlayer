@@ -108,9 +108,7 @@
             $('.t_bar').css({ width: 0 });
             if (audio.status == 'play') {
                 audio.play();
-                setTimeout(function () {
-                    $('.play').addClass('pause');
-                }, 100)
+                $('.play').addClass('pause');
                 timer = setInterval(timeRun, 500)
             } else if (audio.status == 'pause') {
                 $('.cur_time').text('00:00');
