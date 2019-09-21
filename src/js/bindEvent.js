@@ -13,11 +13,13 @@
             if (audio.status == 'pause') {
                 audio.status == 'play';
                 audio.play();
+                rotated ();
                 timer = setInterval(timeRun, 500)
             } else if (audio.status == 'play') {
                 audio.status == 'pause';
                 audio.pause();
                 clearInterval(timer);
+                clearInterval(rotatedTimer);
             }
 
         })
@@ -78,6 +80,8 @@
 
         $('.li_list').each(function (index, item) {
             $(item).on('click', function (e) {
+                $('.pic_box img').css({transform: 'rotateZ(0deg)'});
+                $('.pic_box img').attr('ro_data', 0);
                 if(audio.status == 'play'){
                     $('.play').trigger('click');
                 }
@@ -89,6 +93,16 @@
             })
         })
 
+        var rotatedTimer = null;
+        function rotated () {
+            var deg = $('.pic_box img').attr('ro_data');
+            rotatedTimer = setInterval(function () {
+                $('.pic_box img').css({transform: 'rotateZ(' + deg + 'deg)'})
+                deg = +deg + .3;
+                $('.pic_box img').attr('ro_data', deg);
+            }, 20)
+        }
+
 
         function timeRun() {
             var currentTime = setTime(audio.Audio.currentTime);
@@ -99,7 +113,10 @@
         }
 
         function changeSong(index) {
+            $('.pic_box img').css({transform: 'rotateZ(0deg)'});
+            $('.pic_box img').attr('ro_data', 0);
             clearInterval(timer);
+            clearInterval(rotatedTimer);
             timePro = 0;
             startLeft = 0
             render(dataList[index]);
@@ -110,6 +127,7 @@
                 audio.play();
                 $('.play').addClass('pause');
                 timer = setInterval(timeRun, 500)
+                rotated ()
             } else if (audio.status == 'pause') {
                 $('.cur_time').text('00:00');
             }
